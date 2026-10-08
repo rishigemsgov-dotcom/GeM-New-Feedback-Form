@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GeM Training Feedback Form</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f4f6fb;--card:#fff;--text:#1d2433;--muted:#5f6b85;--border:#cfd6e6;--accent:#1f4e9c;--accent-t:#fff;--ok:#18794e;--err:#b42318}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141d;--card:#1a2030;--text:#e8ecf5;--muted:#9aa5bf;--border:#33405c;--accent:#6ea0f0;--accent-t:#0b1020;--ok:#4fcf93;--err:#ff8a80}}
+:root[data-theme="dark"]{--bg:#10141d;--card:#1a2030;--text:#e8ecf5;--muted:#9aa5bf;--border:#33405c;--accent:#6ea0f0;--accent-t:#0b1020;--ok:#4fcf93;--err:#ff8a80}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 40px}
+header{background:var(--accent);color:var(--accent-t);border-radius:12px 12px 0 0;padding:20px 22px}
+header h1{margin:0 0 4px;font-size:1.4rem}
+header p{margin:0;opacity:.9;font-size:.95rem}
+form,.done{background:var(--card);border:1px solid var(--border);border-top:0;border-radius:0 0 12px 12px;padding:22px}
+fieldset{border:1px solid var(--border);border-radius:10px;margin:0 0 20px;padding:14px 16px 6px}
+legend{font-weight:600;padding:0 6px;color:var(--accent)}
+label{display:block;font-weight:600;font-size:.92rem;margin:0 0 4px}
+.f{margin-bottom:14px}
+.req::after{content:" *";color:var(--err)}
+input[type=text],input[type=email],select,textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}
+select:disabled{opacity:.55}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.hint{font-size:.8rem;color:var(--muted);margin-top:3px}
+.stars{display:flex;gap:6px}
+.stars button{background:none;border:0;font-size:1.9rem;line-height:1;cursor:pointer;color:var(--border);padding:0}
+.stars button.on{color:#f5a623}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+button.p,button.s{padding:11px 22px;border-radius:8px;font:inherit;font-weight:600;cursor:pointer;border:1px solid var(--accent)}
+button.p{background:var(--accent);color:var(--accent-t)}
+button.s{background:transparent;color:var(--accent)}
+.err{color:var(--err);font-size:.85rem;margin-top:8px;min-height:1.2em}
+.done{display:none;text-align:center;border-top:1px solid var(--border);border-radius:12px;margin-top:0}
+.done h2{color:var(--ok);margin-top:0}
+.admin{margin-top:18px;font-size:.85rem;color:var(--muted)}
+.wide{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>GeM Training Content Feedback</h1>
+<p>Select the topic you want to comment on and share your suggestions or queries.</p>
+</header>
+
+<form id="f" novalidate>
+<fieldset>
+<legend>About you</legend>
+<div class="row">
+<div class="f"><label for="name">Name</label><input type="text" id="name" autocomplete="name"></div>
+<div class="f"><label for="email">Email</label><input type="email" id="email" autocomplete="email"></div>
+</div>
+<div class="f"><label for="utype" class="req">I am a</label>
+<select id="utype"><option value="">Select user type</option><option>Buyer (Government User)</option><option>Seller</option><option>Nodal / GRA / VA Officer</option><option>Trainer / Internal Team</option><option>Other</option></select></div>
+</fieldset>
+
+<fieldset>
+<legend>Select topic</legend>
+<div class="f"><label for="mod" class="req">Module</label><select id="mod"></select></div>
+<div class="f"><label for="sub" class="req">Sub Module</label><select id="sub" disabled><option value="">Select Module first</option></select></div>
+<div class="f"><label for="top" class="req">Topic</label><select id="top" disabled><option value="">Select Sub Module first</option></select></div>
+</fieldset>
+
+<fieldset>
+<legend>Your feedback</legend>
+<div class="f"><label>Overall rating of this topic</label>
+<div class="stars" id="stars" role="radiogroup" aria-label="Rating"></div></div>
+<div class="f"><label for="fb">Suggestion &amp; Feedback</label>
+<textarea id="fb" placeholder="What worked well? What can we improve?"></textarea></div>
+</fieldset>
+
+<fieldset>
+<legend>Queries</legend>
+<div class="f"><label for="qc">Query related to Content</label>
+<textarea id="qc" placeholder="Anything unclear or missing in the training content / video / document for this topic"></textarea></div>
+<div class="f"><label for="qp">Query related to Portal</label>
+<textarea id="qp" placeholder="Any issue or question about using the GeM portal (login, registration, profile, etc.)"></textarea>
+<div class="hint">Please do not share passwords or OTPs.</div></div>
+</fieldset>
+
+<div class="btns"><button type="submit" class="p">Submit Feedback</button><button type="reset" class="s" id="reset">Clear</button></div>
+<div class="err" id="err" role="alert"></div>
+</form>
+
+<div class="done" id="done">
+<h2>Thank you!</h2>
+<p>Your feedback has been recorded.</p>
+<p id="note" class="hint"></p>
+<button class="p" id="again">Submit another response</button>
+</div>
+
+<div class="admin" id="admin" hidden>
+<button class="s" id="export">Export all responses (CSV)</button>
+</div>
+</div>
+
+<script>
+const DATA = {
+"Buyer Management":{
+ "1.1.1 GeM Nodal":["1.1.1.1 Onboarding Process of GeM Nodal Officer on GeM New","1.1.1.2 Profile Update GeM Nodal"],
+ "1.1.2 GeM Registering Authority (GRA)":["1.1.2.1 Onboarding Process of GRA on GeM New","1.1.2.2 Profile Update GRA"],
+ "1.1.3 Primary Users":["1.1.3.1 Migration Process of Primary Users on GeM New","1.1.3.2 Profile Update Primary User"],
+ "1.1.4 Secondary Users":["1.1.4.1 Migration Process of Secondary Users on GeM New","1.1.4.2 Profile Update Secondary User"],
+ "1.1.5 Verifying Authority (VA)":["1.1.5.1 Onboarding Process of VA on GeM New","1.1.5.2 Profile Update VA"]},
+"Seller Management":{
+ "1.2.1 Artificial Judicial Person":["1.2.1.1 Migration Process of Judicial Person on GeM New"],
+ "1.2.2 Association of Persons":["1.2.2.1 Migration Process of Association of Person Type on GeM New"],
+ "1.2.3 Body of Individual":["1.2.3.1 Migration Process of Body of Individual Type on GeM New"],
+ "1.2.4 Company":["1.2.4.1 Migration Process of Company Type on GeM New"],
+ "1.2.5 Firm":["1.2.5.1 Migration Process of Firm Type on GeM New"],
+ "1.2.6 Government Entity":["1.2.6.1 Migration Process of Government Entity of Person Type on GeM New"],
+ "1.2.7 Hindu Undivided Family":["1.2.7.1 Migration Process of Hindu Undivided Family on GeM New"],
+ "1.2.8 Local Authority":["1.2.8.1 Migration Process of Local Authority on GeM New"],
+ "1.2.9 Proprietorship":["1.2.9.1 Migration Process of Proprietorship on GeM New"],
+ "1.2.10 Trust":["1.2.10.1 Migration Process of Trust on GeM New"]},
+"GeM New Login":{
+ "1.3.1 GeM Authenticator App":["1.3.1.1 Sign In to GeM New by Using GeM Authenticator App"],
+ "1.3.2 GeM New Login Methods":["1.3.2.1 Sign In to GeM New Using GeM Credentials and QR Code"],
+ "1.3.3 Login with Parichay":["1.3.3.1 Sign In with Parichay"],
+ "1.3.4 Password Management":["1.3.4.1 Forgot Username & Forgot Password"]},
+"LMS Management":{
+ "1.4.1 LMS":["1.4.1.1 LMS Homepage","1.4.1.2 Registration: Government Users","1.4.1.3 Registration: Non-Government Users","1.4.1.4 Webinars and Training Calendar"]},
+"Notification Hub":{
+ "1.5.1 Notification Hub":["1.5.1.1 Notification Hub: UI and Management"]}
+};
+const $=id=>document.getElementById(id);
+const mod=$('mod'),sub=$('sub'),top_=$('top');
+let rating=0;
+
+function fill(sel,items,ph){
+  sel.innerHTML='';
+  const o=document.createElement('option');o.value='';o.textContent=ph;sel.appendChild(o);
+  items.forEach(t=>{const x=document.createElement('option');x.value=t;x.textContent=t;sel.appendChild(x)});
+  sel.disabled=items.length===0;
+}
+function resetCascade(){
+  fill(mod,Object.keys(DATA),'Select Module');
+  fill(sub,[],'Select Module first');
+  fill(top_,[],'Select Sub Module first');
+}
+mod.addEventListener('change',()=>{
+  const s=DATA[mod.value]?Object.keys(DATA[mod.value]):[];
+  fill(sub,s,s.length?'Select Sub Module':'Select Module first');
+  fill(top_,[],'Select Sub Module first');
+  if(s.length===1){sub.value=s[0];sub.dispatchEvent(new Event('change'))}
+});
+sub.addEventListener('change',()=>{
+  const t=(DATA[mod.value]||{})[sub.value]||[];
+  fill(top_,t,t.length?'Select Topic':'Select Sub Module first');
+  if(t.length===1)top_.value=t[0];
+});
+
+const stars=$('stars');
+for(let i=1;i<=5;i++){
+  const b=document.createElement('button');b.type='button';b.textContent='\u2605';b.setAttribute('aria-label',i+' star');
+  b.onclick=()=>{rating=rating===i?0:i;paint()};stars.appendChild(b);
+}
+function paint(){[...stars.children].forEach((b,i)=>b.classList.toggle('on',i<rating))}
+
+resetCascade();
+
+let db=null,dl=null,isAdmin=false;
+(async()=>{
+  try{
+    if(window.claude){
+      db=await claude.use('db');dl=await claude.use('downloads');
+      const u=await claude.use('user');
+      isAdmin=!!(u&&u.canEdit&&u.canEdit());
+      if(isAdmin&&db&&dl)$('admin').hidden=false;
+    }
+  }catch(e){db=null}
+})();
+
+$('reset').addEventListener('click',()=>{setTimeout(()=>{resetCascade();rating=0;paint();$('err').textContent=''},0)});
+
+$('f').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const err=$('err');err.textContent='';
+  if(!$('utype').value||!mod.value||!sub.value||!top_.value){err.textContent='Please select user type, Module, Sub Module and Topic.';return}
+  if(!$('fb').value.trim()&&!$('qc').value.trim()&&!$('qp').value.trim()&&!rating){err.textContent='Please add a rating, feedback or a query before submitting.';return}
+  const rec={
+    submittedAt:new Date().toISOString(),name:$('name').value.trim(),email:$('email').value.trim(),
+    userType:$('utype').value,module:mod.value,subModule:sub.value,topic:top_.value,rating:rating||'',
+    feedback:$('fb').value.trim(),contentQuery:$('qc').value.trim(),portalQuery:$('qp').value.trim()
+  };
+  let saved=false;
+  if(db){try{await db.collection('responses').doc('r_'+Date.now()+'_'+Math.random().toString(36).slice(2,7)).set(rec);saved=true}catch(x){saved=false}}
+  $('note').textContent=saved?'':'Note: this page could not save your response online. Please share your feedback with the GeM training team directly.';
+  $('f').style.display='none';$('done').style.display='block';
+});
+$('again').onclick=()=>{$('f').reset();resetCascade();rating=0;paint();$('done').style.display='none';$('f').style.display='block'};
+
+$('export').onclick=async()=>{
+  try{
+    const snap=await db.collection('responses').get();
+    const rows=[];snap.forEach?snap.forEach(d=>rows.push(d.data?d.data():d)):(snap.docs||snap).forEach(d=>rows.push(d.data?d.data():d));
+    const cols=['submittedAt','name','email','userType','module','subModule','topic','rating','feedback','contentQuery','portalQuery'];
+    const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+    const csv=[cols.join(',')].concat(rows.map(r=>cols.map(c=>q(r[c])).join(','))).join('\n');
+    await dl.save({filename:'gem-feedback-responses.csv',data:csv});
+  }catch(x){alert('Could not export responses.')}
+};
+</script>
+</body>
+</html>
